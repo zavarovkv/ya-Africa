@@ -47,6 +47,8 @@ function getData(url, callback) {
 var requests = ['/countries', '/cities', '/populations'];
 var responses = {};
 
+var continent = window.prompt('Укажите континент', 'Africa');
+
 for (i = 0; i < 3; i++) {
     var request = requests[i];
     
@@ -55,7 +57,6 @@ for (i = 0; i < 3; i++) {
             var innerRequest = request;
             
             return function (error, result) {
-                console.log(123, innerRequest, result);
                 responses[innerRequest] = result;
                 var l = [];
                 for (K in responses)
@@ -64,7 +65,7 @@ for (i = 0; i < 3; i++) {
                 if (l.length == 3) {
                     var c = [], cc = [], p = 0;
                     for (i = 0; i < responses['/countries'].length; i++) {
-                        if (responses['/countries'][i].continent === 'Africa') {
+                        if (responses['/countries'][i].continent === continent) {
                             c.push(responses['/countries'][i].name);
                         }
                     }
