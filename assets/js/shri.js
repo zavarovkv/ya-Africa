@@ -49,8 +49,13 @@ var responses = {};
 
 for (i = 0; i < 3; i++) {
     var request = requests[i];
-    var callback = function (error, result) {
-        responses[request] = result;
+    
+    getData(request, 
+    (function() {
+        var request2 = request;
+        return function (error, result) {
+        console.log(123, request2, result);
+        responses[request2] = result;
         var l = [];
         for (K in responses)
             l.push(K);
@@ -81,7 +86,9 @@ for (i = 0; i < 3; i++) {
 
             console.log('Total population in African cities: ' + p);
         }
-    };
+    }
+    })()
+);
 
-    getData(request, callback);
+    // getData(request, callback.bind(null, request, '123788'));
 }
