@@ -14,19 +14,19 @@ function getData(url, callback) {
             {name: 'Tanzania', continent: 'Africa'}
         ],
         '/cities': [
-            {name: 'Bamenda', country: 'Cameroon'},
+            {name: 'Bamenda', country: 'Japan'},
             {name: 'Suva', country: 'Fiji Islands'},
             {name: 'Quetzaltenango', country: 'Guatemala'},
-            {name: 'Osaka', country: 'Japan'},
+            {name: 'Japan', country: 'Japan'},
             {name: 'Subotica', country: 'Yugoslavia'},
             {name: 'Zanzibar', country: 'Tanzania'},
         ],
         '/populations': [
-            {count: 138000, name: 'Bamenda'},
+            {count: 138000, name: 'Japan'},
             {count: 77366, name: 'Suva'},
             {count: 90801, name: 'Quetzaltenango'},
             {count: 2595674, name: 'Osaka'},
-            {count: 100386, name: 'Subotica'},
+            {count: 100386, name: 'Bamenda'},
             {count: 157634, name: 'Zanzibar'}
         ]
     };
@@ -47,7 +47,7 @@ function getData(url, callback) {
 var requests = ['/countries', '/cities', '/populations'];
 var responses = {};
 
-var continent = window.prompt('Укажите континент', 'Africa');
+var userReq = window.prompt('Укажите название страны или города и узнаете в нем численность населения', 'Cameroon');
 
 for (i = 0; i < 3; i++) {
     var request = requests[i];
@@ -57,36 +57,78 @@ for (i = 0; i < 3; i++) {
             var innerRequest = request;
             
             return function (error, result) {
+                // Обработка ошибок от сервера
+                if (error !== null) {
+                    console.log('Server error:' + error);
+                    return false;
+                }
+                
                 responses[innerRequest] = result;
                 var l = [];
                 for (K in responses)
                     l.push(K);
                 
                 if (l.length == 3) {
-                    var c = [], cc = [], p = 0;
+                    var c = [], cc = [], p = 0; 
+                    var userReqC = [], userReqCC = [], userReqCp = 0, userReqCCp = 0;
                     for (i = 0; i < responses['/countries'].length; i++) {
-                        if (responses['/countries'][i].continent === continent) {
+                        if (responses['/countries'][i].continent === 'Africa') {
                             c.push(responses['/countries'][i].name);
                         }
                     }
                     
                     for (i = 0; i < responses['/cities'].length; i++) {
+                        // Для 'Africa'
                         for (j = 0; j < c.length; j++) {
                             if (responses['/cities'][i].country === c[j]) {
                                 cc.push(responses['/cities'][i].name);
                             }
                         }
-                    }
-                    
-                    for (i = 0; i < responses['/populations'].length; i++) {
-                        for (j = 0; j < cc.length; j++) {
-                            if (responses['/populations'][i].name === cc[j]) {
-                                p += responses['/populations'][i].count;
-                            }
+                        /* Поскольку существуют страны, в которых Название страны совпадает 
+                        с названием города (столицы), то подсчет численности в городах и 
+                        странах осуществляется в разных массивах */
+                        if (responses['/cities'][i].country == userReq) {
+                            userReqCC.push(responses['/cities'][i].name);
+                        }
+                        if (responses['/cities'][i].name == userReq) {
+                            userReqC.push(responses['/cities'][i].name);
                         }
                     }
-
+                    
+                    var maxLength = Math.max.apply(null, [cc.length, userReqC.length, userReqCC.length]);
+                                        
+                    for (i = 0; i < responses['/populations'].length; i++) {
+                        // Для 'Africa'
+                        for (j = 0; j < maxLength; j++) {
+                            if(j in cc) {
+                                if (responses['/populations'][i].name === cc[j]) {
+                                    p += responses['/populations'][i].count;
+                                }
+                            }
+                            if(j in userReqC) {
+                                if (responses['/populations'][i].name === userReqC[j]) {
+                                    userReqCp += responses['/populations'][i].count;
+                                }
+                            }
+                            if(j in userReqCC) {
+                                if (responses['/populations'][i].name === userReqCC[j]) {
+                                    userReqCCp += responses['/populations'][i].count;
+                                }
+                            }
+                        } // j
+                    }  // i
+                    
                     console.log('Total population in African cities: ' + p);
+                    
+                    if (userReqC.length === 0 && userReqCC.length === 0) {
+                        console.log('Not found population for ' + userReq);
+                    }
+                    if (userReqC.length !== 0) {
+                        console.log('Total population in ' + userReq + ' city: ' + userReqCp);
+                    }
+                    if (userReqCC.length !== 0) {
+                        console.log('Total population in ' + userReq + ' country: ' + userReqCCp);
+                    }
                 }
             }
         })()
