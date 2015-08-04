@@ -45,6 +45,7 @@ function getData(url, callback) {
 /**
  * Ваши изменения ниже
  */
+ 
 var requests = ['/countries', '/cities', '/populations'];
 var responses = {};
 
@@ -86,9 +87,7 @@ for (i = 0; i < 3; i++) {
                                 cc.push(responses['/cities'][i].name);
                             }
                         }
-                        /* Поскольку существуют страны, в которых Название страны совпадает 
-                        с названием города (столицы), то подсчет численности в городах и 
-                        странах осуществляется в разных массивах */
+                        /* Избегаем проблемы, когда название страны и города совпадает */
                         if (responses['/cities'][i].country == userReq) {
                             userReqCC.push(responses['/cities'][i].name);
                         }
