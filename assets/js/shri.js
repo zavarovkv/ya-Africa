@@ -49,7 +49,7 @@ function getData(url, callback) {
 var requests = ['/countries', '/cities', '/populations'];
 var responses = {};
 
-var userReq = window.prompt('Укажите название страны или города и узнаете в нем численность населения', 'Cameroon');
+var userReq = window.prompt('Please, enter the name of a country or city for get total  population', 'Cameroon');
 
 for (i = 0; i < 3; i++) {
     var request = requests[i];
