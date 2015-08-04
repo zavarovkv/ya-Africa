@@ -14,19 +14,19 @@ function getData(url, callback) {
             {name: 'Tanzania', continent: 'Africa'}
         ],
         '/cities': [
-            {name: 'Bamenda', country: 'Japan'},
+            {name: 'Bamenda', country: 'Cameroon'},
             {name: 'Suva', country: 'Fiji Islands'},
             {name: 'Quetzaltenango', country: 'Guatemala'},
-            {name: 'Japan', country: 'Japan'},
+            {name: 'Osaka', country: 'Japan'},
             {name: 'Subotica', country: 'Yugoslavia'},
             {name: 'Zanzibar', country: 'Tanzania'},
         ],
         '/populations': [
-            {count: 138000, name: 'Japan'},
+            {count: 138000, name: 'Bamenda'},
             {count: 77366, name: 'Suva'},
             {count: 90801, name: 'Quetzaltenango'},
             {count: 2595674, name: 'Osaka'},
-            {count: 100386, name: 'Bamenda'},
+            {count: 100386, name: 'Subotica'},
             {count: 157634, name: 'Zanzibar'}
         ]
     };
@@ -40,6 +40,7 @@ function getData(url, callback) {
         callback(null, result);
     }, Math.round(Math.random * 1000));
 }
+
 
 /**
  * Ваши изменения ниже
