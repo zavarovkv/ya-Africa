@@ -69,8 +69,9 @@ for (i = 0; i < 3; i++) {
                     l.push(K);
                 
                 if (l.length == 3) {
-                    var c = [], cc = [], p = 0; 
-                    var userReqC = [], userReqCC = [], userReqCp = 0, userReqCCp = 0;
+                    var c = [], cc = [], p = 0, 
+                        userReqC = [], userReqCC = [], userReqCp = 0, userReqCCp = 0;
+                        
                     for (i = 0; i < responses['/countries'].length; i++) {
                         if (responses['/countries'][i].continent === 'Africa') {
                             c.push(responses['/countries'][i].name);
